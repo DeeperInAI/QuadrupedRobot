@@ -26,3 +26,6 @@ sudo bash /home/ubuntu/Robotics/QuadrupedRobot/Mangdang/PWMController/install.sh
 sudo bash /home/ubuntu/Robotics/QuadrupedRobot/StanfordQuadruped/install.sh
 sudo bash /home/ubuntu/Robotics/QuadrupedRobot/UDPComms/install.sh
 
+# face Detect services
+sudo bash /home/ubuntu/Robotics/QuadrupedRobot/FaceTrack/install.sh
+

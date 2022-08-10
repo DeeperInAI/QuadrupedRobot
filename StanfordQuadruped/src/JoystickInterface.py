@@ -25,6 +25,28 @@ class JoystickInterface:
         self.udp_publisher = UDPComms.Publisher(udp_publisher_port,65532)
 
 
+    def get_left_command(self, state, do_print=False):
+        command = Command()
+        command.trot_event = False #unknown
+        command.hop_event = False
+        command.dance_activate_event = False
+        command.shutdown_signal = False
+        command.activate_event = False
+        command.dance_switch_event = False
+        command.gait_switch_event = False
+        return command
+
+    def get_right_command(self, state, do_print=False):
+        command = Command()
+        command.trot_event = False #unknown
+        command.hop_event = False
+        command.dance_activate_event = False
+        command.shutdown_signal = False
+        command.activate_event = False
+        command.dance_switch_event = False
+        command.gait_switch_event = False
+        return command
+
     def get_command(self, state, do_print=False):
         try:
             msg = self.udp_handle.get()

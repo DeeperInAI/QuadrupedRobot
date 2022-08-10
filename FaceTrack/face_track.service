@@ -1,0 +1,10 @@
+[Unit]
+Description=Face Track service
+
+[Service]
+ExecStart=taskset -c 2,3 /usr/bin/python3 /home/ubuntu/Robotics/QuadrupedRobot/FaceTrack/trackResult.py
+KillSignal=2
+TimeoutStopSec=10
+
+[Install]
+WantedBy=multi-user.target

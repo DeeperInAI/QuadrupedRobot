@@ -102,6 +102,21 @@ def cmd_dump(cmd):
     print("trot_event ", cmd.trot_event)
     print("activate_event ", cmd.activate_event)
 
+    logFile = open("controlCommand.txt","w")
+    logFile.write("======================================================================\n")
+    logFile.write("===                         begin                                  ===\n")
+    logFile.write("======================================================================\n")
+    logFile.write("horizontal_velocity: " + str(cmd.horizontal_velocity) + "\n")
+    logFile.write("yaw_rate: " + str(cmd.yaw_rate) + "\n")
+    logFile.write("height: " + str(cmd.height) + "\n")
+    logFile.write("pitch: " + str(cmd.pitch) + "\n")
+    logFile.write("roll: " + str(cmd.roll) + "\n")
+    logFile.write("activation: " + str(cmd.activation) + "\n")
+    logFile.write("hop_event: " + str(cmd.hop_event) + "\n")
+    logFile.write("trot_event: " + str(cmd.trot_event) + "\n")
+    logFile.write("activate_event: " + str(cmd.activate_event) + "\n")
+    logFile.close()
+
 def main():
     """Main program
     """
@@ -169,8 +184,17 @@ def main():
             last_loop = time.time()
 
             # Parse the udp joystick commands and then update the robot controller's parameters
-            command = joystick_interface.get_command(state)
-            #cmd_dump(command)
+            commandFile = open("command.txt", "r")
+            currentCommand = commandFile.readline()
+
+            if currentCommand == "left":
+                command = joystick_interface.get_left_command()
+            elif currentCommand == "right":
+                command = joystick_interface.get_right_command()
+            else:
+                command = joystick_interface.get_command(state)
+
+            cmd_dump(command)
             _pic = "walk.png" if command.yaw_rate ==0 else "turnaround.png"
             if command.trot_event == True:
                 _pic = "walk_r1.png"
