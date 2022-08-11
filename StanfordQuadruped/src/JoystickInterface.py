@@ -27,6 +27,7 @@ class JoystickInterface:
 
     def get_left_command(self, state, do_print=False):
         command = Command()
+        command.yaw_rate = -2.0
         command.trot_event = False #unknown
         command.hop_event = False
         command.dance_activate_event = False
@@ -38,6 +39,7 @@ class JoystickInterface:
 
     def get_right_command(self, state, do_print=False):
         command = Command()
+        command.yaw_rate = 2.0
         command.trot_event = False #unknown
         command.hop_event = False
         command.dance_activate_event = False

@@ -8,7 +8,7 @@ nextActionFile = "../StanfordQuadruped/nextAction.txt"
 subscriber = Subscriber(pipe_port,self_port)
 while True:
     message = subscriber.recv()
-    angle = (int(message['msg']) - 550) / 100
+    angle = (int(message['left']) - 550) / 100
     nextAction = open(nextActionFile, "w")
     if angle > 0:
         nextAction.write("right")
