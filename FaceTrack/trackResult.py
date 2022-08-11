@@ -1,11 +1,10 @@
 from UDPComms import Subscriber
 
-HOST = '10.32.176.172'           #服务器的ip
+serverIp = "192.168.3.131"
 pipe_port = 3257                   #服务器端口
-self_port = 3259
 nextActionFile = "../StanfordQuadruped/nextAction.txt"
 
-subscriber = Subscriber(pipe_port,self_port)
+subscriber = Subscriber(serverIp,pipe_port)
 while True:
     message = subscriber.recv()
     angle = (int(message['left']) - 550) / 100

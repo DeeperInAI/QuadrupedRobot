@@ -11,15 +11,15 @@ timeout = socket.timeout
 MAX_SIZE = 65507
 
 class Publisher:
-    def __init__(self, port_tx,port):
+    def __init__(self,ip,port_tx,port):
         """ Create a Publisher Object
 
         Arguments:
             port         -- the port to publish the messages on
         """
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.des_address = ("127.0.0.1",port_tx)
-        self.sock.bind(("127.0.0.1", port))
+        self.des_address = (ip,port_tx)
+        self.sock.bind((ip, port))
         self.sock.settimeout(0.2)
 
     def send(self, obj):
@@ -33,7 +33,7 @@ class Publisher:
 
 
 class Subscriber:
-    def __init__(self, port_rx, timeout=0.2):
+    def __init__(self, ip,port_rx, timeout=0.2):
         """ Create a Subscriber Object
 
         Arguments:
@@ -48,7 +48,7 @@ class Subscriber:
 
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) 
         self.sock.settimeout(timeout)
-        self.sock.bind(("127.0.0.1", port_rx))
+        self.sock.bind((ip, port_rx))
 
     def recv(self):
         """ Receive a single message from the socket buffer. It blocks for up to timeout seconds.
@@ -103,7 +103,7 @@ class Subscriber:
         self.sock.close()
 
 class Subscriber:
-    def __init__(self, port, timeout=0.2):
+    def __init__(self, ip,port, timeout=0.2):
         """ Create a Subscriber Object
 
         Arguments:
@@ -125,7 +125,7 @@ class Subscriber:
             self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
 
         self.sock.settimeout(timeout)
-        self.sock.bind(("", port))
+        self.sock.bind((ip, port))
 
     def recv(self):
         """ Receive a single message from the socket buffer. It blocks for up to timeout seconds.
@@ -186,4 +186,5 @@ if __name__ == "__main__":
 
     a = Publisher(1000)
     a.send( {"text": "magic", "number":5.5, "bool":False} )
+
 
