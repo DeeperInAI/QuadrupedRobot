@@ -11,15 +11,15 @@ timeout = socket.timeout
 MAX_SIZE = 65507
 
 class Publisher:
-    def __init__(self,ip,port_tx,port):
+    def __init__(self, address_tx,port_tx,port):
         """ Create a Publisher Object
 
         Arguments:
             port         -- the port to publish the messages on
         """
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.des_address = (ip,port_tx)
-        self.sock.bind((ip, port))
+        self.des_address = (address_tx,port_tx)
+        self.sock.bind(("0.0.0.0", port)) # 如果绑定到0.0.0.0那么所有机器上的地址都可以访问服务，如果绑定到特定的ip那么只能是特定的ip能够到达redis服务。
         self.sock.settimeout(0.2)
 
     def send(self, obj):
@@ -33,7 +33,7 @@ class Publisher:
 
 
 class Subscriber:
-    def __init__(self, ip,port_rx, timeout=0.2):
+    def __init__(self, port_rx, timeout=0.2):
         """ Create a Subscriber Object
 
         Arguments:
@@ -46,9 +46,9 @@ class Subscriber:
         self.last_data = None
         self.last_time = float('-inf')
 
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) 
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.sock.settimeout(timeout)
-        self.sock.bind((ip, port_rx))
+        self.sock.bind(("127.0.0.1", port_rx))
 
     def recv(self):
         """ Receive a single message from the socket buffer. It blocks for up to timeout seconds.
@@ -62,7 +62,7 @@ class Subscriber:
         self.last_time = monotonic()
         return msgpack.loads(self.last_data, raw=False)
     def get(self):
-        """ Returns the latest message it can without blocking. If the latest massage is 
+        """ Returns the latest message it can without blocking. If the latest massage is
             older then timeout seconds it raises a UDPComms.timeout exception"""
         try:
             self.sock.settimeout(0)
@@ -103,7 +103,7 @@ class Subscriber:
         self.sock.close()
 
 class Subscriber:
-    def __init__(self, ip,port, timeout=0.2):
+    def __init__(self, port, timeout=0.2):
         """ Create a Subscriber Object
 
         Arguments:
@@ -125,7 +125,7 @@ class Subscriber:
             self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
 
         self.sock.settimeout(timeout)
-        self.sock.bind((ip, port))
+        self.sock.bind(("", port))
 
     def recv(self):
         """ Receive a single message from the socket buffer. It blocks for up to timeout seconds.
@@ -140,7 +140,7 @@ class Subscriber:
         return msgpack.loads(self.last_data, raw=False)
 
     def get(self):
-        """ Returns the latest message it can without blocking. If the latest massage is 
+        """ Returns the latest message it can without blocking. If the latest massage is
             older then timeout seconds it raises a UDPComms.timeout exception"""
         try:
             self.sock.settimeout(0)
@@ -186,5 +186,4 @@ if __name__ == "__main__":
 
     a = Publisher(1000)
     a.send( {"text": "magic", "number":5.5, "bool":False} )
-
 
