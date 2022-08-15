@@ -41,13 +41,13 @@ class Subscriber:
             timeout      -- how long to wait before a message is considered out of date
         """
         self.max_size = MAX_SIZE
-        self.timeout = timeout
+        #self.timeout = timeout
 
         self.last_data = None
         self.last_time = float('-inf')
 
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.sock.settimeout(timeout)
+        #self.sock.settimeout(timeout)
         self.sock.bind(("127.0.0.1", port_rx))
 
     def recv(self):
@@ -113,7 +113,7 @@ class Subscriber:
         self.max_size = MAX_SIZE
 
         self.port = port
-        self.timeout = timeout
+        #self.timeout = timeout
 
         self.last_data = None
         self.last_time = float('-inf')
@@ -124,7 +124,7 @@ class Subscriber:
         if hasattr(socket, "SO_REUSEPORT"):
             self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
 
-        self.sock.settimeout(timeout)
+        #self.sock.settimeout(timeout)
         self.sock.bind(("", port))
 
     def recv(self):
