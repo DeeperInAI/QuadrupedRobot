@@ -4,6 +4,7 @@ import time
 from src.State import BehaviorState, State
 from src.Command import Command
 from src.Utilities import deadband, clipped_first_order_filter
+import json
 
 
 class JoystickInterface:
@@ -52,6 +53,11 @@ class JoystickInterface:
     def get_command(self, state, do_print=False):
         try:
             msg = self.udp_handle.get()
+
+            logFile = open("msg.txt", "w")
+            logFile.write(json.dumps(msg))
+            logFile.close()
+
             command = Command()
 
             ####### Handle discrete commands ########
